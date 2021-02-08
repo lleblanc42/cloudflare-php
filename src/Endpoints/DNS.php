@@ -56,10 +56,10 @@ class DNS implements API
             $options['ttl'] = $ttl;
         }
 
-        if (is_numeric($priority)) {
+        if (!empty($priority) && is_numeric($priority)) {
             $options['priority'] = (int)$priority;
         }
-        
+
         if (!empty($data)) {
             $options['data'] = $data;
         }
@@ -132,6 +132,11 @@ class DNS implements API
             return $records->result[0]->id;
         }
         return false;
+    }
+
+    public function getExport(string $zoneID): string
+    {
+        return $this->adapter->get('zones/' . $zoneID . '/dns_records/export');
     }
 
     public function updateRecordDetails(string $zoneID, string $recordID, array $details): \stdClass
